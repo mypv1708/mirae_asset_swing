@@ -17,7 +17,7 @@ import java.sql.ResultSet;
  *
  * @author Kin Tu
  */
-public class ConnectionDatabase {
+public class DatabaseConnection {
 
   private static final Map<String, String> serverUrls = new HashMap<>();
 

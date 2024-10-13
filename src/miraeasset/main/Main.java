@@ -5,7 +5,7 @@
 package miraeasset.main;
 
 import miraeasset.controller.LoginController;
-import miraeasset.ClientSide.Client;
+import miraeasset.ClientSide.LoginClient;
 import miraeasset.view.LoginFrame;
 
 /**
@@ -15,7 +15,7 @@ import miraeasset.view.LoginFrame;
 public class Main {
      public static void main(String[] args) {
         LoginFrame loginView = new LoginFrame();
-        Client loginClient = new Client();
+        LoginClient loginClient = new LoginClient();
         LoginController loginController = new LoginController(loginView, loginClient);
 
         loginView.setVisible(true);

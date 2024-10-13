@@ -6,7 +6,7 @@ package miraeasset.view;
 
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import miraeasset.ClientSide.Client;
+import miraeasset.ClientSide.LoginClient;
 
 /**
  *

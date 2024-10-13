@@ -5,7 +5,7 @@
 package miraeasset.controller;
 
 import javax.swing.JOptionPane;
-import miraeasset.ClientSide.Client;
+import miraeasset.ClientSide.LoginClient;
 import miraeasset.view.LoginFrame;
 import miraeasset.view.ManagerMainFrame;
 
@@ -15,10 +15,10 @@ import miraeasset.view.ManagerMainFrame;
  */
 public class LoginController {
 
-    private final Client loginClient;
+    private final LoginClient loginClient;
     private final LoginFrame loginView;
 
-    public LoginController(LoginFrame loginView, Client loginClient) {
+    public LoginController(LoginFrame loginView, LoginClient loginClient) {
         this.loginClient = loginClient;
         this.loginView = loginView;
 
@@ -28,20 +28,19 @@ public class LoginController {
     private void handleLogin() {
         String username = loginView.txtUsername.getText();
         String password = new String(loginView.txtPassword.getPassword());
+        String branchInfo = loginClient.authenticateUser(username, password);
 
-
-        if (loginClient.authenticateUser(username, password)) {
+        if (branchInfo != null) {
             JOptionPane.showMessageDialog(null, "Đăng nhập thành công");
             loginView.dispose();
-            showMainFrame();
-
+            showMainFrame(branchInfo);
         } else {
             JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu không đúng!");
         }
     }
 
-    private void showMainFrame() {
-        ManagerMainFrame mainFrame = new ManagerMainFrame();
+    private void showMainFrame(String branchInfo) {
+        ManagerMainFrame mainFrame = new ManagerMainFrame(branchInfo);
         mainFrame.setVisible(true);
     }
 }

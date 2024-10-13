@@ -30,6 +30,7 @@ public class AuthenticationRequestHandler extends Thread {
     @Override
     public void run() {
         try {
+//            objectOut = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
 
@@ -37,8 +38,11 @@ public class AuthenticationRequestHandler extends Thread {
             String password = in.readLine();
 
             // Xác thực người dùng với cơ sở dữ liệu
-            if (authenticationService.authenticateUser(username, password)) {
+            String branchInfo = authenticationService.authenticateUser(username, password);
+            if (branchInfo != null) {
                 out.println("Đăng nhập thành công");
+                out.println(branchInfo); // Gửi thông tin branch cho client
+
             } else {
                 out.println("Sai tài khoản hoặc mật khẩu!");
             }

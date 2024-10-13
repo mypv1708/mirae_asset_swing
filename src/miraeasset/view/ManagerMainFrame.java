@@ -5,6 +5,9 @@
 package miraeasset.view;
 
 import java.awt.Color;
+import java.util.List;
+import miraeasset.ClientSide.EkycClient;
+import miraeasset.model.Ekyc;
 
 /**
  *
@@ -15,18 +18,19 @@ public class ManagerMainFrame extends javax.swing.JFrame {
     /**
      * Creates new form ManagerMainJFrame
      */
-    
     Color DefaultColor, ClickedColor;
-    
-    public ManagerMainFrame() {
+    private String branchInfo;
+
+    public ManagerMainFrame(String branchInfo) {
+        this.branchInfo = branchInfo;
         initComponents();
-        DefaultColor = new Color(255,255,255);
-        ClickedColor = new Color(153,153,153);
-        
+        DefaultColor = new Color(255, 255, 255);
+        ClickedColor = new Color(153, 153, 153);
+
         CusPanel.setBackground(ClickedColor);
         EkycPanel.setBackground(DefaultColor);
         ContractPanel.setBackground(DefaultColor);
-        
+
         CustomerInternalFrame customerInternalFrame = new CustomerInternalFrame();
         jDesktopPanel.removeAll();
         jDesktopPanel.add(customerInternalFrame).setVisible(true);
@@ -313,7 +317,7 @@ public class ManagerMainFrame extends javax.swing.JFrame {
 
     private void EkycPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EkycPanelMouseClicked
         // TODO add your handling code here:
-        EkycInternalFrame ekycInternalFrame = new EkycInternalFrame();
+        EkycInternalFrame ekycInternalFrame = new EkycInternalFrame(branchInfo);
         jDesktopPanel.removeAll();
         jDesktopPanel.add(ekycInternalFrame).setVisible(true);
     }//GEN-LAST:event_EkycPanelMouseClicked
@@ -356,7 +360,7 @@ public class ManagerMainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ManagerMainFrame().setVisible(true);
+                new ManagerMainFrame("branchInfo").setVisible(true);
             }
         });
     }

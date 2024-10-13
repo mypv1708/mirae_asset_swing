@@ -14,11 +14,11 @@ import java.net.Socket;
  *
  * @author Kin Tu
  */
-public class Client {
+public class LoginClient {
     private static final String SERVER_ADDRESS = "localhost";
     private static final int SERVER_PORT = 12345;
 
-    public boolean authenticateUser(String user_account, String password) {
+    public String authenticateUser(String user_account, String password) {
         try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT); 
                 PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true); 
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
@@ -29,11 +29,13 @@ public class Client {
 
             // Nhận kết quả xác thực từ server
             String response = in.readLine();
-            return "Đăng nhập thành công".equals(response);
+            if ("Đăng nhập thành công".equals(response)) {
+                return in.readLine(); // Nhận thông tin về branch từ server
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 }
