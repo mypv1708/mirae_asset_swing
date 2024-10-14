@@ -5,9 +5,11 @@
 package miraeasset.view;
 
 import java.awt.Color;
-import java.util.List;
-import miraeasset.ClientSide.EkycClient;
-import miraeasset.model.Ekyc;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import miraeasset.database.DatabaseConnection;
 
 /**
  *
@@ -34,6 +36,9 @@ public class ManagerMainFrame extends javax.swing.JFrame {
         CustomerInternalFrame customerInternalFrame = new CustomerInternalFrame();
         jDesktopPanel.removeAll();
         jDesktopPanel.add(customerInternalFrame).setVisible(true);
+        
+        String branchName = getBranchName(branchInfo);
+        LabelBranch.setText(branchName);
     }
 
     /**
@@ -57,10 +62,11 @@ public class ManagerMainFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         ContractPanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        LabelBranch = new javax.swing.JLabel();
         jDesktopPanel = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel1.setPreferredSize(new java.awt.Dimension(1200, 660));
 
@@ -207,29 +213,38 @@ public class ManagerMainFrame extends javax.swing.JFrame {
             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
         );
 
+        LabelBranch.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        LabelBranch.setForeground(new java.awt.Color(255, 255, 255));
+        LabelBranch.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        LabelBranch.setText("Chi Nhánh Thanh Khê");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ContractPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LabelBranch)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(EkycPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(CusPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(24, 24, 24))
+                        .addComponent(ContractPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(EkycPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(CusPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(22, 22, 22)
+                .addComponent(LabelBranch)
+                .addGap(41, 41, 41)
                 .addComponent(CusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(EkycPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(ContractPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(347, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jDesktopPanel.setBackground(new java.awt.Color(0, 102, 102));
@@ -244,7 +259,7 @@ public class ManagerMainFrame extends javax.swing.JFrame {
         );
         jDesktopPanelLayout.setVerticalGroup(
             jDesktopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 597, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -279,7 +294,6 @@ public class ManagerMainFrame extends javax.swing.JFrame {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -369,6 +383,7 @@ public class ManagerMainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel ContractPanel;
     private javax.swing.JPanel CusPanel;
     private javax.swing.JPanel EkycPanel;
+    private javax.swing.JLabel LabelBranch;
     private javax.swing.JDesktopPane jDesktopPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -380,4 +395,24 @@ public class ManagerMainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
+
+    private String getBranchName(String branchCode) {
+        String branchName = "";
+        String sql = "SELECT branch_name FROM Branch WHERE branch_code = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection(branchInfo, "sa", "170801");
+             PreparedStatement pstmt = conn.prepareStatement(sql); ) {
+            
+            pstmt.setString(1, branchCode);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                branchName = rs.getString("branch_name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return branchName;
+    }
 }

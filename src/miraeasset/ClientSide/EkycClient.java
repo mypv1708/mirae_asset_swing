@@ -25,15 +25,33 @@ public class EkycClient {
         this.branchInfo = branchInfo;
     }
 
-    public List<Ekyc> getEkycData() {
-        try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT); 
-             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream()); 
-             ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+    public List<Ekyc> getEkycData(String filter) {
+        try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT); ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream()); ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+
+            out.writeObject("GET_EKYC_FILTERED");
             out.writeObject(branchInfo);
+            out.writeObject(filter);
+
             return (List<Ekyc>) in.readObject();
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean updateEkyc(String userAccount, String review, String status) {
+        try (
+                Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT); ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream()); ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+            out.writeObject("UPDATE_EKYC");
+            out.writeObject(branchInfo);
+            out.writeObject(userAccount);
+            out.writeObject(review);
+            out.writeObject(status);
+            return (boolean) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

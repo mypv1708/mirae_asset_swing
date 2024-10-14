@@ -27,10 +27,28 @@ public class EkycHandler extends Thread {
     }
 
     public void run() {
-        try (ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream()); ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream())) {
+        try (
+                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream()); ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream())) {
+            String command = (String) in.readObject();
             String branchInfo = (String) in.readObject();
-            List<Ekyc> ekycList = ekycService.getEkycData(branchInfo);
-            out.writeObject(ekycList);
+
+            switch (command) {
+                case "GET_EKYC_FILTERED":
+                    String filter = (String) in.readObject();
+                    List<Ekyc> ekycList = ekycService.getEkycData(branchInfo, filter);
+                    out.writeObject(ekycList);
+                    break;
+                case "UPDATE_EKYC":
+                    String userAccount = (String) in.readObject();
+                    String review = (String) in.readObject();
+                    String status = (String) in.readObject();
+                    boolean updateResult = ekycService.updateEkyc(branchInfo, userAccount, review, status);
+                    out.writeObject(updateResult);
+                    break;
+                default:
+                    out.writeObject(null);
+                    break;
+            }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

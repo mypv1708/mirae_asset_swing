@@ -5,8 +5,6 @@
 package miraeasset.view;
 
 import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
-import miraeasset.ClientSide.LoginClient;
 
 /**
  *
@@ -227,7 +225,6 @@ public class LoginFrame extends javax.swing.JFrame {
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
